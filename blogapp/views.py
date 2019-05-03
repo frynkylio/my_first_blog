@@ -1,10 +1,13 @@
+from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
+from django.views.generic import View
+from django.urls import reverse
+from .models import Post, Tag
+from .utils import *
+from .forms import TagForm, PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.views.generic import View
-
-from .forms import TagForm, PostForm
-from .utils import *
 
 
 def posts_list(request):
