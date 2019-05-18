@@ -1,8 +1,4 @@
-from django.shortcuts import render, redirect
-from django.shortcuts import get_object_or_404
 from django.views.generic import View
-from django.urls import reverse
-from .models import Post, Tag
 from .utils import *
 from .forms import TagForm, PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -45,11 +41,6 @@ def posts_list(request):
     return render(request, 'blog/index.html', context=context_dict)
 
 
-def tags_list(request):
-    tags = Tag.objects.all()
-    return render(request, 'blog/tags_list.html', context={'tags': tags})
-
-
 class PostDetail(ObjectDetailMixin, View):
     model = Post
     template = 'blog/post_detail.html'
@@ -68,16 +59,16 @@ class PostUpdate(LoginRequiredMixin, ObjectUpdateMixin, View):
     raise_exception = True
 
 
-class TagDetail(ObjectDetailMixin, View):
-    model = Tag
-    template = 'blog/tag_detail.html'
-
-
 class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     model = Post
     template = 'blog/post_delete_form.html'
     redirect_url = 'posts_list_url'
     raise_exception = True
+
+
+class TagDetail(ObjectDetailMixin, View):
+    model = Tag
+    template = 'blog/tag_detail.html'
 
 
 class TagCreate(LoginRequiredMixin, ObjectCreateMixin, View):
@@ -99,3 +90,7 @@ class TagDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
     redirect_url = 'tags_list_url'
     raise_exception = True
 
+
+def tags_list(request):
+    tags = Tag.objects.all()
+    return render(request, 'blog/tags_list.html', context={'tags': tags})
